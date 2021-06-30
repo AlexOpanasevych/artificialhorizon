@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/resources/rollGraticule.svg</file>
+        <file>qml/CrossHair.qml</file>
+        <file>qml/HorizonBackground.qml</file>
+        <file>qml/main.qml</file>
+        <file>qml/ParametersForm.qml</file>
+        <file>qml/RollPointer.qml</file>
+        <file>qml/ArtificialHorizon.qml</file>
+    </qresource>
+</RCC>
