@@ -8,7 +8,8 @@ CONFIG += c++11
 
 SOURCES += \
         aircraftposition.cpp \
-        main.cpp
+        main.cpp \
+        models/flexiblemodel.cpp
 
 RESOURCES += qml.qrc
 
@@ -24,4 +25,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    aircraftposition.h
+    aircraftposition.h \
+    models/flexiblemodel.h

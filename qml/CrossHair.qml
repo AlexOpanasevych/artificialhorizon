@@ -9,7 +9,7 @@ import QtQuick.Shapes 1.15
 
 Item {
     id: root
-    property int gap: 4
+    property int gap: height / 5
     antialiasing: true
     smooth: true
     layer.samples: 32
@@ -67,9 +67,9 @@ Item {
             }
 
             startX: width / 2; startY: height / 2
-            PathLine { x: width / 3.5; y: height / 2 + 25 }
+            PathLine { x: width / 3.5; y: height / 2 + 10 }
             PathLine { x: width / 2; y: height / 2 + 2 * root.gap }
-            PathLine { x: width - width / 3.5; y: height / 2 + 25 }
+            PathLine { x: width - width / 3.5; y: height / 2 + 10 }
             PathLine { x: width / 2; y: height / 2}
         }
 

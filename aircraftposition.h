@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QQmlEngine>
 #include <QString>
+#include "models/flexiblemodel.h"
 
 
 class AircraftPosition : public QObject
@@ -13,11 +14,14 @@ class AircraftPosition : public QObject
     Q_PROPERTY(int roll READ roll WRITE setRoll NOTIFY rollChanged)
     Q_PROPERTY(int pitch READ pitch WRITE setPitch NOTIFY pitchChanged)
     Q_PROPERTY(int yaw READ yaw WRITE setYaw NOTIFY yawChanged)
+    Q_PROPERTY(KFlexibleModel* pointsModel READ pointsModel WRITE setPointsModel NOTIFY pointsModelChanged)
     int m_roll = 0;
 
     int m_pitch = 0;
 
     int m_yaw = 0;
+
+    KFlexibleModel* m_pointsModel = new KFlexibleModel({"xCoord", "yCoord"}, this);
 
 public:
     explicit AircraftPosition(QObject *parent = nullptr);
@@ -35,6 +39,11 @@ public:
     int yaw() const
     {
         return m_yaw;
+    }
+
+    KFlexibleModel* pointsModel() const
+    {
+        return m_pointsModel;
     }
 
 public slots:
@@ -65,11 +74,21 @@ public slots:
         emit yawChanged(m_yaw);
     }
 
+    void setPointsModel(KFlexibleModel* pointsModel)
+    {
+        if (m_pointsModel == pointsModel)
+            return;
+
+        m_pointsModel = pointsModel;
+        emit pointsModelChanged(m_pointsModel);
+    }
+
 signals:
 
     void rollChanged(int roll);
     void pitchChanged(int pitch);
     void yawChanged(int yaw);
+    void pointsModelChanged(KFlexibleModel* pointsModel);
 };
 
 #endif // AIRCRAFTPOSITION_H

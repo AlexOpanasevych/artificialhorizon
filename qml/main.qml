@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Window 2.12
+import QtQuick.Controls 2.15
 
 Window {
     width: 1280
@@ -7,17 +8,24 @@ Window {
     visible: true
     title: qsTr("Artificial Horizon")
 
-
-
-
-//    HorizonBackground {
-//        anchors.fill: parent
-//    }
+    AircraftRoadmap {
+        anchors.fill: parent
+    }
 
     ArtificialHorizon {
-        anchors.fill: parent
+        id: hud
+        width: parent.width / 6
+        height: width
         roll: aircraft.roll
         pitch: aircraft.pitch
+
+        Drag.active: true
+    }
+
+    MouseArea {
+        anchors.fill: hud
+        drag.target: hud
+        preventStealing: true
     }
 
     ParametersForm {
@@ -30,6 +38,5 @@ Window {
         onPitchChanged: aircraft.pitch = pitch
         onYawChanged: aircraft.yaw = yaw
     }
-
 
 }

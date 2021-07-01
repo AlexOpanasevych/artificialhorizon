@@ -9,6 +9,7 @@ Item {
     id: root
     property alias roll: root.rotation
     readonly property int pitchScale: 30
+    property double scaleCoefficient: 1
     property int pitch: 0
     antialiasing: true
     smooth: true
@@ -19,7 +20,7 @@ Item {
         anchors.centerIn: parent
         Rectangle {
             id: firstPart
-            height: parent.height / 2 + pitch / pitchScale * root.height / 2
+            height: parent.height / 2 + pitch / pitchScale * root.height / 2 / scaleCoefficient
             width: parent.width
             gradient: Gradient {
                 GradientStop { position: 0.25; color: Qt.hsla(0.6, 1.0, 0.25) }
@@ -28,7 +29,7 @@ Item {
         }
         Rectangle {
             id: secondPart
-            height: parent.height / 2 - pitch / pitchScale * root.height / 2
+            height: parent.height / 2 - pitch / pitchScale * root.height / 2 / scaleCoefficient
             anchors {
                 left:   firstPart.left;
                 right:  firstPart.right;

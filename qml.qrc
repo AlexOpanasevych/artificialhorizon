@@ -7,5 +7,7 @@
         <file>qml/ParametersForm.qml</file>
         <file>qml/RollPointer.qml</file>
         <file>qml/ArtificialHorizon.qml</file>
+        <file>qml/AircraftRoadmap.qml</file>
+        <file>qml/resources/marker.png</file>
     </qresource>
 </RCC>

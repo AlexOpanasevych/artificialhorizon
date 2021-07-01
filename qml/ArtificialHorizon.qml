@@ -2,7 +2,7 @@ import QtQuick 2.0
 
 /*
     \qmltype RollRuler
-    \inherits Item
+    \inherits Rectangle
     \brief Displays whole artificial horizon depending on values of pitch, roll and yaw
 */
 Item {
@@ -10,14 +10,19 @@ Item {
 
     property int roll: 0
     property int pitch: 0
+    clip: true
+    Rectangle {
+
+        radius: width / 2
+        anchors.fill: parent
 
 
-    HorizonBackground {
-        anchors.centerIn: parent
-        height: parent.height / 1.7
-        width: parent.width / 1.7
-        roll: parent.roll
-        pitch: parent.pitch
+        HorizonBackground {
+            anchors.fill: parent
+            scaleCoefficient: 2
+            roll: main.roll
+            pitch: main.pitch
+        }
     }
 
     Canvas {
@@ -27,8 +32,8 @@ Item {
         property double pitchScale: 30
 
         anchors.centerIn: parent
-        height: parent.height / 1.7
-        width: parent.width / 1.7
+        height: parent.height / 2
+        width: parent.width
 
         implicitWidth: 200; implicitHeight: 200
 
@@ -99,24 +104,24 @@ Item {
                 var w = 10
 
                 if (pp % 10 == 0) {
-                    ctx.fillText(pp, 50, y + 4)
+                    ctx.fillText(pp, 45, y + 4)
                     ctx.beginPath()
                     var gap = 4
                     if(pp < 0) {
-                        ctx.moveTo(-4 * w, y - gap); ctx.lineTo(-4 * w, y)
-                        ctx.moveTo(-4 * w, y); ctx.lineTo(4 * w, y)
-                        ctx.moveTo(4 * w, y); ctx.lineTo(4 * w, y - gap)
+                        ctx.moveTo(-3.5 * w, y - gap); ctx.lineTo(-3.5 * w, y)
+                        ctx.moveTo(-3.5 * w, y); ctx.lineTo(3.5 * w, y)
+                        ctx.moveTo(3.5 * w, y); ctx.lineTo(3.5 * w, y - gap)
 
                     }
                     else {
-                        ctx.moveTo(-4 * w, y + gap); ctx.lineTo(-4 * w, y)
-                        ctx.moveTo(-4 * w, y); ctx.lineTo(4 * w, y)
-                        ctx.moveTo(4 * w, y); ctx.lineTo(4 * w, y + gap)
+                        ctx.moveTo(-3.5 * w, y + gap); ctx.lineTo(-3.5 * w, y)
+                        ctx.moveTo(-3.5 * w, y); ctx.lineTo(3.5 * w, y)
+                        ctx.moveTo(3.5 * w, y); ctx.lineTo(3.5 * w, y + gap)
                     }
                 }
                 else {
                     ctx.beginPath()
-                    ctx.moveTo(-2.3 * w, y); ctx.lineTo(2.3 * w, y)
+                    ctx.moveTo(-2 * w, y); ctx.lineTo(2 * w, y)
                 }
                 ctx.stroke()
 
@@ -147,21 +152,23 @@ Item {
             smooth: true
             antialiasing: true
             rotation: -roll
+            width: parent.width
+            height: parent.height
         }
 
         RollPointer {
-            width: 20
-            height: 20
+            width: 15
+            height: 15
             anchors.horizontalCenter: parent.horizontalCenter
-            y: rollGraticule.y + 50
+            y: rollGraticule.y + 25
         }
 
 
     }
 
     CrossHair {
-        width: 250
-        height: 30
+        width: 100
+        height: 10
         anchors.centerIn: parent
     }
 }
