@@ -1,4 +1,4 @@
-QT += quick
+QT += quick positioning
 
 CONFIG += c++11
 
@@ -9,7 +9,7 @@ CONFIG += c++11
 SOURCES += \
         aircraftposition.cpp \
         main.cpp \
-        models/flexiblemodel.cpp
+        models/pointsmodel.cpp
 
 RESOURCES += qml.qrc
 
@@ -26,4 +26,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     aircraftposition.h \
-    models/flexiblemodel.h
+    models/pointsmodel.h

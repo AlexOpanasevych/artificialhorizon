@@ -20,8 +20,7 @@ Map {
         onPressed: {
             if(mouse.button === Qt.RightButton) {
                 var coords = map.toCoordinate(Qt.point(mouse.x,mouse.y))
-                console.log(coords)
-                aircraft.pointsModel.push_back({'xCoord': coords.latitude, 'yCoord': coords.longitude})
+                aircraft.pointsModel.appendPoint(coords)
                 route.addCoordinate(coords)
             }
         }
@@ -40,7 +39,7 @@ Map {
         model: aircraft.pointsModel
         delegate: MapQuickItem {
             id: mapItem
-            coordinate: QtPositioning.coordinate(xCoord, yCoord)
+            coordinate: QtPositioning.coordinate(model.coordinate.latitude, model.coordinate.longitude)
 
             anchorPoint.x: image.width * 0.5
             anchorPoint.y: image.height
@@ -73,7 +72,7 @@ Map {
 
                     onPositionChanged: {
                         if(drag.active) {
-                            aircraft.pointsModel.setLineData({'xCoord':mapItem.coordinate.latitude, 'yCoord': mapItem.coordinate.longitude},index)
+                            model.coordinate = mapItem.coordinate
                             var path = route.path
                             path[index].latitude = mapItem.coordinate.latitude
                             path[index].longitude = mapItem.coordinate.longitude
@@ -89,9 +88,11 @@ Map {
                 MenuItem {
                     visible: index > 0 && index < aircraft.pointsModel.size
                     enabled: visible
-                    text: "Add before" + aircraft.pointsModel.size
+                    text: "Add before"
                     onTriggered: {
-                        contextMenu.addPointBefore(index)
+                        var i = index
+                        var newPoint = aircraft.pointsModel.insertPointBefore(i)
+                        route.insertCoordinate(i, newPoint)
                     }
                 }
                 MenuItem {
@@ -99,46 +100,38 @@ Map {
                     enabled: visible
                     text: "Add after"
                     onTriggered: {
-                        contextMenu.addPointAfter(index)
+                        var i = index
+                        var newPoint = aircraft.pointsModel.insertPointAfter(i)
+                        route.insertCoordinate(i + 1, newPoint)
                     }
                 }
                 MenuItem {
                     text: "Delete"
                     onTriggered: {
 
-                        contextMenu.removePoint(index)
+                        aircraft.pointsModel.removePoint(index)
+                        route.removeCoordinate(index)
                     }
                 }
 
-                function removePoint(index) {
-                    aircraft.pointsModel.remove(index)
-                    route.removeCoordinate(index)
-                }
+//                function removePoint(index) {
+//                    aircraft.pointsModel.remove(index)
+//                    route.removeCoordinate(index)
+//                }
 
-                function addPointBefore(index) {
-//                    if(index > 0 && index < count) {
-                        console.log(count)
-                        var x = aircraft.pointsModel.value(index - 1, 'xCoord')
-                        var y = aircraft.pointsModel.value(index - 1, 'yCoord')
-                        var newPointX = (x + mapItem.coordinate.latitude) / 2
-                        var newPointY = (y + mapItem.coordinate.longitude) / 2
-                        aircraft.pointsModel.insert(index, {'xCoord': newPointX, 'yCoord': newPointY})
-                        route.insertCoordinate(index, QtPositioning.coordinate(newPointX, newPointY))
-//                    }
-                }
+//                function addPointBefore(index) {
+//                    var coords = aircraft.pointsModel.value(index - 1, model.coordinate)
+//                    var newPoint = QtPositioning.coordinate((coords.latitude + mapItem.coordinate.latitude) / 2, (coords.longitude + mapItem.coordinate.longitude) / 2)
+//                    aircraft.pointsModel.insertPoint(index, newPoint)
+//                    route.insertCoordinate(index, newPoint)
+//                }
 
-                function addPointAfter(index) {
-//                    if(index > -1 && index < count - 1) {
-                        console.log(count)
-                        var x = aircraft.pointsModel.value(index + 1, 'xCoord')
-                        var y = aircraft.pointsModel.value(index + 1, 'yCoord')
-                        var newPointX = (x + mapItem.coordinate.latitude) / 2
-                        var newPointY = (y + mapItem.coordinate.longitude) / 2
-                        aircraft.pointsModel.insert(index + 1, {'xCoord': newPointX, 'yCoord': newPointY})
-                        route.insertCoordinate(index + 1, QtPositioning.coordinate(newPointX, newPointY))
-//                    }
-                }
-
+//                function addPointAfter(index) {
+//                    var coords = aircraft.pointsModel.value(index + 1, model.coordinate)
+//                    var newPoint = QtPositioning.coordinate((coords.latitude + mapItem.coordinate.latitude) / 2, (coords.longitude + mapItem.coordinate.longitude) / 2)
+//                    aircraft.pointsModel.insertPoint(index + 1, newPoint)
+//                    route.insertCoordinate(index + 1, newPoint)
+//                }
 
             }
 
