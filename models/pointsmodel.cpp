@@ -25,11 +25,6 @@ QVariant PointsModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-int PointsModel::size() const
-{
-    return m_size;
-}
-
 bool PointsModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     Q_UNUSED(role)
@@ -44,21 +39,11 @@ bool PointsModel::setData(const QModelIndex &index, const QVariant &value, int r
     return false;
 }
 
-void PointsModel::setSize(int size)
-{
-    if (m_size == size)
-        return;
-
-    m_size = size;
-    emit sizeChanged(m_size);
-}
-
 void PointsModel::appendPoint(const QGeoCoordinate &point)
 {
     int pos = m_data.size();
     beginInsertRows(QModelIndex(), pos, pos);
     m_data.push_back(point);
-    setSize(m_data.size());
     endInsertRows();
 }
 
@@ -71,7 +56,6 @@ void PointsModel::insertPoint(int i, const QGeoCoordinate &point)
 {
     beginInsertRows(QModelIndex(), i, i);
     m_data.insert(i, point);
-    setSize(m_data.size());
     endInsertRows();
 }
 
@@ -79,7 +63,7 @@ QGeoCoordinate PointsModel::insertPointAfter(int i)
 {
     auto pointBefore = m_data.at(i + 1);
     auto currentPoint = m_data.at(i);
-    auto newPoint = QGeoCoordinate((pointBefore.latitude() + currentPoint.latitude()) / 2, (pointBefore.longitude() + currentPoint.longitude()) / 2);
+    QGeoCoordinate newPoint((pointBefore.latitude() + currentPoint.latitude()) / 2, (pointBefore.longitude() + currentPoint.longitude()) / 2);
     insertPoint(i + 1, newPoint);
     return newPoint;
 }
@@ -88,7 +72,7 @@ QGeoCoordinate PointsModel::insertPointBefore(int i)
 {
     auto pointBefore = m_data.at(i - 1);
     auto currentPoint = m_data.at(i);
-    auto newPoint = QGeoCoordinate((pointBefore.latitude() + currentPoint.latitude()) / 2, (pointBefore.longitude() + currentPoint.longitude()) / 2);
+    QGeoCoordinate newPoint((pointBefore.latitude() + currentPoint.latitude()) / 2, (pointBefore.longitude() + currentPoint.longitude()) / 2);
     insertPoint(i, newPoint);
     return newPoint;
 }
@@ -103,10 +87,9 @@ QHash<int, QByteArray> PointsModel::roleNames() const
 bool PointsModel::removeRows(int row, int count, const QModelIndex &parent)
 {
     Q_UNUSED(parent)
-    if(row < 0 || row > m_size) return false;
-    beginRemoveRows(QModelIndex(), row, row);
+    if(row < 0 || row + count > m_data.size()) return false;
+    beginRemoveRows(QModelIndex(), row, row + count);
     m_data.remove(row, count);
-    setSize(m_data.size());
     endRemoveRows();
     return true;
 }

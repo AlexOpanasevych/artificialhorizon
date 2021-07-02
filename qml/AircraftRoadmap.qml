@@ -86,23 +86,23 @@ Map {
             Menu {
                 id: contextMenu
                 MenuItem {
-                    visible: index > 0 && index < aircraft.pointsModel.size
-                    enabled: visible
                     text: "Add before"
                     onTriggered: {
-                        var i = index
-                        var newPoint = aircraft.pointsModel.insertPointBefore(i)
-                        route.insertCoordinate(i, newPoint)
+                        if(index > 0 && index < aircraft.pointsModel.rowCount()) {
+                            var i = index
+                            var newPoint = aircraft.pointsModel.insertPointBefore(i)
+                            route.insertCoordinate(i, newPoint)
+                        }
                     }
                 }
                 MenuItem {
-                    visible: (index > -1) && (index < aircraft.pointsModel.size - 1)
-                    enabled: visible
                     text: "Add after"
                     onTriggered: {
-                        var i = index
-                        var newPoint = aircraft.pointsModel.insertPointAfter(i)
-                        route.insertCoordinate(i + 1, newPoint)
+                        if(index > -1 && index < aircraft.pointsModel.rowCount() - 1) {
+                            var i = index
+                            var newPoint = aircraft.pointsModel.insertPointAfter(i)
+                            route.insertCoordinate(i + 1, newPoint)
+                        }
                     }
                 }
                 MenuItem {
