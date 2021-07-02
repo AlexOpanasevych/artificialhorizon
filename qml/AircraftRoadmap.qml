@@ -9,7 +9,7 @@ Map {
     plugin: Plugin {
         name: "osm"
     }
-    center: QtPositioning.coordinate(0, 0)
+    center: QtPositioning.coordinate(50.45067064718528, 30.52481358327688)
     copyrightsVisible: false
     zoomLevel: 13
     Drag.active: true
