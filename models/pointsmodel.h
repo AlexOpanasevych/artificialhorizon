@@ -41,8 +41,12 @@ signals:
     // QAbstractItemModel interface
 public:
     QHash<int, QByteArray> roleNames() const override;
+    bool removeRows(int row, int count, const QModelIndex &parent) override;
 private:
     QVector<QGeoCoordinate> m_data;
+
+    // QAbstractItemModel interface
+
 };
 
 #endif // POINTSMODEL_H

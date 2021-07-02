@@ -64,10 +64,7 @@ void PointsModel::appendPoint(const QGeoCoordinate &point)
 
 void PointsModel::removePoint(int i)
 {
-    beginRemoveRows(QModelIndex(), i, i);
-    m_data.remove(i);
-    setSize(m_data.size());
-    endRemoveRows();
+    removeRows(i, 1, QModelIndex());
 }
 
 void PointsModel::insertPoint(int i, const QGeoCoordinate &point)
@@ -101,4 +98,15 @@ QHash<int, QByteArray> PointsModel::roleNames() const
     QHash<int, QByteArray> names;
     names[Coordinate] = "coordinate";
     return names;
+}
+
+bool PointsModel::removeRows(int row, int count, const QModelIndex &parent)
+{
+    Q_UNUSED(parent)
+    if(row < 0 || row > m_size) return false;
+    beginRemoveRows(QModelIndex(), row, row);
+    m_data.remove(row, count);
+    setSize(m_data.size());
+    endRemoveRows();
+    return true;
 }

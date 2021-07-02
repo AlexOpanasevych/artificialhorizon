@@ -108,9 +108,9 @@ Map {
                 MenuItem {
                     text: "Delete"
                     onTriggered: {
-
-                        aircraft.pointsModel.removePoint(index)
-                        route.removeCoordinate(index)
+                        var i = index
+                        aircraft.pointsModel.removePoint(i)
+                        route.removeCoordinate(i)
                     }
                 }
 
