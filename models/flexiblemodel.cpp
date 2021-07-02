@@ -434,7 +434,11 @@ QVariantList KFlexibleModel::indicesOf(QVariantList varList, QString role)
 
 void KFlexibleModel::setSize(int size)
 {
+    if(m_size == size) {
+        return;
+    }
     m_size = size;
+    emit sizeChanged(m_size);
 }
 
 void KFlexibleModel::generateData()

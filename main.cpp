@@ -20,9 +20,9 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
 
-    AircraftPosition ap;
+    AircraftPosition * ap = new AircraftPosition;
     // expose object to QML
-    engine.rootContext()->setContextProperty("aircraft", &ap);
+    engine.rootContext()->setContextProperty("aircraft", ap);
     engine.load(url);
 
     return app.exec();
